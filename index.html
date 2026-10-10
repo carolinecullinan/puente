@@ -70,7 +70,7 @@ mark.d-it{background:var(--it-soft);color:var(--it);border-bottom:2px dotted var
 /* tab bar */
 nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);
   padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
-nav.tabs .in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+nav.tabs .in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(6,1fr)}
 nav.tabs button{background:none;border:0;padding:10px 2px 12px;font-size:.78em;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
 nav.tabs button .ic{font-size:1.35em;line-height:1}
 nav.tabs button[aria-current="page"]{color:var(--es);font-weight:700}
@@ -88,7 +88,7 @@ details.group summary .count{font-weight:400;color:var(--muted);font-size:.85em}
 details.group .body{padding:0 16px 14px}
 /* flashcard */
 .card{perspective:1200px;margin:6px 0 14px}
-.card .inner{position:relative;min-height:260px;transition:transform .45s ease;transform-style:preserve-3d}
+.card .inner{position:relative;min-height:330px;transition:transform .45s ease;transform-style:preserve-3d}
 .card.flipped .inner{transform:rotateY(180deg)}
 .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;padding:22px;
   display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px;border:2px solid}
@@ -130,6 +130,26 @@ input[type=text]:focus,textarea:focus{border-color:var(--cel);outline:none}
 .settings label{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}
 dialog{border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);max-width:420px;width:calc(100% - 32px)}
 dialog::backdrop{background:rgba(0,0,0,.35)}
+
+.card.mouse:focus{outline:none}
+.card-ex{margin-top:6px;padding-top:10px;border-top:1px dashed var(--line);font-size:.9em;max-width:34ch}
+.card-ex .es{color:var(--ink);font-weight:700}.card-ex .it{color:var(--muted)}
+.card-ex .speak{width:30px;height:30px;font-size:.8em;vertical-align:middle}
+.nb-ex{display:flex;gap:10px;align-items:flex-start;margin:8px 0}
+.nb-ex .es{font-weight:700}.nb-ex .it{color:var(--it);font-size:.9em}
+.nb-ex.inrow{grid-column:1/-1;margin:0 0 4px;font-size:.92em}
+.nb-ex.inrow .speak{width:32px;height:32px;flex:0 0 32px;font-size:.85em}
+.paper{background-image:repeating-linear-gradient(to bottom,transparent 0,transparent calc(1.6em - 1px),var(--line) calc(1.6em - 1px),var(--line) 1.6em);background-position:0 .3em;padding-top:6px}
+.nb-grid,.nb-rule{background:var(--surface);border:1.5px solid var(--ink);border-radius:6px;padding:8px 12px;margin:12px 0}
+.nb-title{font-weight:700;color:var(--es);margin-bottom:4px;border-bottom:2px solid var(--es);display:inline-block}
+.nb-row{display:grid;grid-template-columns:minmax(4.5em,auto) 1fr 2px minmax(4.5em,auto) 1fr;gap:4px 10px;align-items:baseline;padding:2px 0}
+.nb-row .p{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.nb-row .e{font-weight:700;color:var(--es)}
+.nb-row .bar2{background:var(--ink);align-self:stretch;width:2px}
+.nb-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nb-row2 span:first-child{border-right:2px solid var(--ink);padding-right:10px}
+.nb-note{background:var(--cel-soft);border-radius:8px;padding:8px 10px;font-size:.92em}
+nav.tabs button{font-size:.72em}
 </style>
 </head>
 <body>
@@ -147,6 +167,7 @@ dialog::backdrop{background:rgba(0,0,0,.35)}
   <button data-tab="cards"><span class="ic" aria-hidden="true">🃏</span>Cards</button>
   <button data-tab="traps"><span class="ic" aria-hidden="true">🪤</span>Traps</button>
   <button data-tab="vos"><span class="ic" aria-hidden="true">🧉</span>Vos</button>
+  <button data-tab="notebook"><span class="ic" aria-hidden="true">📓</span>Notes</button>
 </div></nav>
 
 <dialog id="settings">
@@ -191,49 +212,99 @@ const GROUPS=[
   ["studio","estudio","s+consonant → es-"],["scuola","escuela","sc- → esc-, uo → ue"],["sapere","saber","p → b between vowels"],
   ["vita","vida","t → d between vowels"],["amico","amigo","c → g between vowels"],["avere","haber","v → b"],
   ["governo","gobierno","v → b, e → ie"],["attenzione","atención","double letters → single"]]},
- {id:"twins",name:"Irregular twins",rule:"Spanish verbs are irregular in the same places as Italian. Learn them in pairs.",cards:[
-  ["(io) tengo","(yo) tengo","identical: tenere / tener"],["(io) vengo","(yo) vengo","identical"],["(io) pongo","(yo) pongo","porre / poner"],
-  ["(io) salgo","(yo) salgo","salire / salir (= go out!)"],["(che) tenga","(que) tenga","subjunctive, identical"],["(che) venga","(que) venga","identical"],
-  ["(io) feci","(yo) hice","passato remoto / indefinido"],["(io) dissi","(yo) dije",""],["(io) venni","(yo) vine",""],
-  ["(io) seppi","(yo) supe",""],["(io) volli","(yo) quise","volere / querer"],["(io) fui","(yo) fui","essere = ser and ir"],
-  ["farò","haré","short future"],["potrò","podré",""],["saprò","sabré",""],["verrò","vendré","Spanish adds d"],
-  ["terrò","tendré","Spanish adds d"],["(che) sia","(que) sea",""],["(che) vada","(que) vaya",""],
-  ["(che) abbia","(que) haya","auxiliary"],["(che) sappia","(que) sepa",""],["(che) stia","(que) esté",""]]},
- {id:"false",name:"False friends",rule:"Same shape, different meaning. The Italian word is on the left; the right side is what you actually want in Spanish.",cards:[
-  ["burro (butter)","manteca","burro = donkey!"],["imbarazzata","me da vergüenza","embarazada = pregnant!"],
-  ["salire (go up)","subir","salir = go out"],["uscire","salir",""],["guardare (look)","mirar","guardar = keep"],
-  ["largo (wide)","ancho","largo = long"],["caldo (hot)","caliente","caldo = broth"],["camera (room)","pieza / habitación","cámara = camera"],
-  ["pronto (ready)","listo","pronto = soon"],["subito","enseguida","súbito = sudden"],["rumore","ruido","rumor = rumour"],
-  ["vaso (vase)","florero","vaso = drinking glass"],["carta (paper)","papel","carta = letter"],["tasca (pocket)","bolsillo","tasca = tavern"],
-  ["officina","taller","oficina = office"],["autista (driver)","chofer / conductor","autista = autistic"],
-  ["morbido (soft)","suave / blando","mórbido = morbid"],["prendere un caffè","tomar un café","prender = turn on (AR)"],
-  ["anche","también","aunque = although"],["ho (avere)","tengo (tener)","haber is only an auxiliary"]]},
+ {id:"twins",name:"Irregular twins",rule:"Start from the Italian you actually say (ho fatto, ho voluto). In Buenos Aires that becomes one word in the pretérito: hice, quise. The passato remoto in brackets is only a bonus: it has the same irregular stem.",cards:[
+  ["(io) tengo","(yo) tengo","tenere / tener: identical","Tengo una reunión a las tres.","Ho una riunione alle tre."],
+  ["(io) vengo","(yo) vengo","identical","Vengo de Roma.","Vengo da Roma."],
+  ["(io) metto / pongo","(yo) pongo","poner = mettere","Pongo el celular en la mesa.","Metto il cellulare sul tavolo."],
+  ["(io) esco","(yo) salgo","salir = uscire (not salire!)","Salgo a las ocho.","Esco alle otto."],
+  ["ho fatto (feci)","hice","one word, no auxiliary","Ayer hice las compras.","Ieri ho fatto la spesa."],
+  ["ho detto (dissi)","dije","","Le dije que sí.","Gli ho detto di sì."],
+  ["sono venuta (venni)","vine","no essere, no -a agreement","Vine a Buenos Aires en enero.","Sono venuta a Buenos Aires a gennaio."],
+  ["ho saputo (seppi)","supe","supe = I found out, like ho saputo","Lo supe ayer.","L'ho saputo ieri."],
+  ["ho voluto (volli)","quise","quise = I tried; no quise = I refused","Quise llamarte, pero no pude.","Volevo chiamarti, ma non ho potuto."],
+  ["ho potuto (potei)","pude","","No pude ir a la clase.","Non sono potuta andare a lezione."],
+  ["ho avuto (ebbi)","tuve","","Tuve una semana larga.","Ho avuto una settimana lunga."],
+  ["ho messo (misi)","puse","","Puse las llaves en la mesa.","Ho messo le chiavi sul tavolo."],
+  ["sono andata","fui (ir)","fui = went AND was","Fui al centro con Sofía.","Sono andata in centro con Sofia."],
+  ["è stato","fue (ser)","","Fue un día largo.","È stata una giornata lunga."],
+  ["farò","haré","in speech: voy a hacer","Mañana haré la tarea.","Domani farò i compiti."],
+  ["potrai","podrás","vos: podrás too","¿Podrás venir el sábado?","Potrai venire sabato?"],
+  ["saprò","sabré","","Lo sabré mañana.","Lo saprò domani."],
+  ["verrò","vendré","Spanish adds d","Vendré a las nueve.","Verrò alle nove."],
+  ["avrò tempo","tendré tiempo","tener for possession","Tendré tiempo el viernes.","Avrò tempo venerdì."],
+  ["(che) sia","(que) sea","","No creo que sea fácil.","Non credo che sia facile."],
+  ["(che) vada","(que) vaya","a porteño goodbye","¡Que te vaya bien!","In bocca al lupo! (lit. che ti vada bene)"],
+  ["(che) sia arrivato","(que) haya llegado","haber, never ser","Espero que haya llegado bien.","Spero che sia arrivato bene."],
+  ["(che) tu stia","(que) estés","","Espero que estés bien.","Spero che tu stia bene."]]},
+ {id:"false",name:"False friends",rule:"Same shape, different meaning. Left: the Italian. Right: what you actually want in Spanish.",cards:[
+  ["burro (butter)","manteca","burro = donkey!","Pan con manteca, por favor.","Pane e burro, per favore."],
+  ["imbarazzata","me da vergüenza","embarazada = pregnant!","Me da vergüenza hablar en público.","Mi imbarazza parlare in pubblico."],
+  ["salire (go up)","subir","salir = go out","Subo al tercer piso.","Salgo al terzo piano."],
+  ["uscire","salir","","Salgo con amigos esta noche.","Esco con degli amici stasera."],
+  ["guardare (look)","mirar","guardar = keep, save","¡Mirá esa casa!","Guarda quella casa!"],
+  ["largo (wide)","ancho","largo = long","La avenida es muy ancha.","Il viale è molto largo."],
+  ["fa caldo","hace calor","caldo = broth","Hoy hace mucho calor.","Oggi fa molto caldo."],
+  ["camera (room)","pieza / habitación","cámara = camera","Alquilo una pieza en Almagro.","Affitto una camera ad Almagro."],
+  ["pronta (ready)","lista","pronto = soon","¿Estás lista?","Sei pronta?"],
+  ["subito","enseguida","súbito = sudden","Vuelvo enseguida.","Torno subito."],
+  ["rumore","ruido","rumor = rumour","Hay mucho ruido en la calle.","C'è molto rumore in strada."],
+  ["vaso (vase)","florero","vaso = drinking glass","Puse las flores en un florero.","Ho messo i fiori in un vaso."],
+  ["carta (paper)","papel","carta = letter","¿Tenés un papel?","Hai un foglio di carta?"],
+  ["tasca (pocket)","bolsillo","tasca = tavern","Tengo el celular en el bolsillo.","Ho il cellulare in tasca."],
+  ["officina","taller","oficina = office","Llevé la bici al taller.","Ho portato la bici in officina."],
+  ["autista (driver)","chofer","autista = autistic","Le pregunté al chofer.","Ho chiesto all'autista."],
+  ["morbido (soft)","suave","mórbido = morbid","Esta almohada es muy suave.","Questo cuscino è molto morbido."],
+  ["prendere un caffè","tomar un café","prender = turn on (AR)","¿Tomamos un café?","Prendiamo un caffè?"],
+  ["anche","también","aunque = although","Yo también.","Anch'io."],
+  ["ho (avere)","tengo (tener)","haber is only an auxiliary","Tengo dos hermanos.","Ho due fratelli."]]},
  {id:"gender",name:"Gender flips",rule:"Masculine in Italian, feminine in Spanish (and a few the other way). Learn them as one family.",cards:[
-  ["il latte","la leche",""],["il sangue","la sangre",""],["il fiore","la flor",""],["il miele","la miel",""],
-  ["il sale","la sal",""],["il naso","la nariz",""],["il costume","la costumbre","custom"],["il segnale","la señal",""],
-  ["il carcere","la cárcel",""],["la fine","el fin","the other way"],["l'origine","el origen","the other way"],["l'analisi","el análisis","the other way"]]},
+  ["il latte","la leche","","La leche está fría.","Il latte è freddo."],["il sangue","la sangre","","La sangre es roja.","Il sangue è rosso."],
+  ["il fiore","la flor","","Compré una flor amarilla.","Ho comprato un fiore giallo."],["il miele","la miel","","La miel está rica.","Il miele è buono."],
+  ["il sale","la sal","","Pasame la sal.","Passami il sale."],["il naso","la nariz","","Tengo la nariz tapada.","Ho il naso chiuso."],
+  ["il costume (custom)","la costumbre","","Es una costumbre argentina.","È un'usanza argentina."],["il segnale","la señal","","Acá no hay señal.","Qui non c'è segnale."],
+  ["il carcere","la cárcel","","Pasó un año en la cárcel.","Ha passato un anno in carcere."],["la fine","el fin","the other way","Hasta el fin del mundo.","Fino alla fine del mondo."],
+  ["l'origine","el origen","the other way","El origen del problema es el agua.","L'origine del problema è l'acqua."],["l'analisi","el análisis","the other way","El análisis de riesgo está listo.","L'analisi del rischio è pronta."]]},
  {id:"connect",name:"C1 connectors",rule:"Use connectors from at least five different functions in every C1 text.",cards:[
-  ["tuttavia","sin embargo / no obstante","contrast"],["inoltre","además / asimismo","adding"],["invece","en cambio","contrast"],
-  ["quindi, pertanto","por lo tanto / por consiguiente","consequence"],["dato che","ya que / dado que","cause"],
-  ["benché","aunque / si bien","concession; si bien + indicative"],["affinché","para que","+ subjunctive"],
-  ["a meno che","a menos que","+ subjunctive"],["purché","siempre que / con tal de que","+ subjunctive"],
-  ["cioè","es decir / o sea","reformulation"],["infatti","de hecho","emphasis"],["insomma","en definitiva","conclusion"],
-  ["secondo me","a mi juicio","opinion"]]},
+  ["tuttavia","sin embargo / no obstante","contrast","Es caro; sin embargo, vale la pena.","È caro; tuttavia, ne vale la pena."],
+  ["inoltre","además / asimismo","adding","Además, reduce los costos.","Inoltre, riduce i costi."],
+  ["invece","en cambio","contrast","Yo tomo mate; ella, en cambio, toma café.","Io bevo mate; lei invece beve caffè."],
+  ["quindi, pertanto","por lo tanto","consequence","Llueve; por lo tanto, nos quedamos.","Piove; quindi restiamo."],
+  ["dato che","ya que / dado que","cause","Ya que estás acá, ayudame.","Dato che sei qui, aiutami."],
+  ["benché","aunque (+ subj.)","concession","Aunque llueva, salgo.","Benché piova, esco."],
+  ["affinché","para que (+ subj.)","purpose","Te lo explico para que lo entiendas.","Te lo spiego affinché tu lo capisca."],
+  ["a meno che","a menos que (+ subj.)","condition","Voy, a menos que llueva.","Vado, a meno che non piova."],
+  ["purché","siempre que (+ subj.)","condition","Te lo presto, siempre que me lo devuelvas.","Te lo presto, purché me lo restituisca."],
+  ["cioè","es decir / o sea","reformulation","Es decir, hay que invertir más.","Cioè, bisogna investire di più."],
+  ["infatti","de hecho","emphasis","De hecho, el riesgo aumentó.","Infatti, il rischio è aumentato."],
+  ["insomma","en definitiva","conclusion","En definitiva, el plan funciona.","Insomma, il piano funziona."],
+  ["secondo me","a mi juicio","opinion","A mi juicio, es la mejor opción.","Secondo me, è l'opzione migliore."]]},
  {id:"argentina",name:"Buenos Aires words",rule:"What porteños actually say, many with Italian roots.",cards:[
-  ["lavoro","laburo","work (lunfardo)"],["ciao","chau","only for goodbye"],["fiacca","fiaca","laziness: tengo fiaca"],
-  ["faccia","facha","looks, style"],["nonno","nono",""],["appartamento","departamento","Spain: piso"],
-  ["frigorifero","heladera",""],["autobus","colectivo / bondi",""],["metro","subte",""],["guidare","manejar",""],
-  ["prendere (il bus)","agarrar / tomar","never coger in Argentina"],["fragola","frutilla",""],["avocado","palta",""],
-  ["maglietta","remera",""],["piscina","pileta",""],["mi manchi","te extraño",""]]},
+  ["lavoro","laburo","lunfardo from lavoro","Hoy tengo mucho laburo.","Oggi ho molto lavoro."],["ciao","chau","only for goodbye","¡Chau, nos vemos!","Ciao, ci vediamo!"],
+  ["fiacca","fiaca","","Hoy tengo fiaca.","Oggi non ho voglia di fare niente."],["faccia","facha","looks, style","Tiene buena facha.","Ha un bell'aspetto."],
+  ["nonna","nona","","Mi nona era de Génova.","Mia nonna era di Genova."],["appartamento","departamento","Spain: piso","Busco un departamento en Almagro.","Cerco un appartamento ad Almagro."],
+  ["frigorifero","heladera","","La leche está en la heladera.","Il latte è nel frigo."],["autobus","colectivo / bondi","","Tomo el colectivo en la esquina.","Prendo l'autobus all'angolo."],
+  ["metro","subte","","Voy en subte.","Vado in metro."],["guidare","manejar","","No sé manejar.","Non so guidare."],
+  ["prendere (il bus)","agarrar / tomar","never coger in Argentina","Agarrá la línea B hasta Medrano.","Prendi la linea B fino a Medrano."],
+  ["fragola","frutilla","","Un licuado de frutilla, por favor.","Un frullato di fragole, per favore."],["avocado","palta","","Un tostado con palta.","Un toast con avocado."],
+  ["maglietta","remera","","Me compré una remera blanca.","Mi sono comprata una maglietta bianca."],["piscina","pileta","","¿Hay pileta en el edificio?","C'è una piscina nel palazzo?"],
+  ["mi manchi","te extraño","","Te extraño mucho.","Mi manchi tanto."]]},
  {id:"work",name:"Your work vocabulary",rule:"Explain your own projects in Spanish for one minute a day.",cards:[
-  ["resilienza urbana","resiliencia urbana",""],["gestione del rischio di disastri","gestión del riesgo de desastres",""],
-  ["alluvione","inundación","flood"],["siccità","sequía","drought"],["frana","deslizamiento de tierra","landslide"],
-  ["ondata di calore","ola de calor",""],["sistema di allerta precoce","sistema de alerta temprana",""],
-  ["portatori di interesse","actores clave","stakeholders"],["rafforzamento delle capacità","fortalecimiento de capacidades",""],
-  ["risultati (findings)","hallazgos",""],["finanziamento","financiamiento",""],["linea di base","línea de base",""],
-  ["insediamenti informali","asentamientos informales","AR: barrios populares"],["sindaco","intendente (AR)","Spain: alcalde"]]}
+  ["resilienza urbana","resiliencia urbana","","La resiliencia urbana depende de la planificación.","La resilienza urbana dipende dalla pianificazione."],
+  ["gestione del rischio di disastri","gestión del riesgo de desastres","","Trabajo en gestión del riesgo de desastres.","Lavoro nella gestione del rischio di disastri."],
+  ["alluvione","inundación","flood","Las inundaciones afectan al casco urbano.","Le alluvioni colpiscono il centro urbano."],
+  ["siccità","sequía","drought","La sequía reduce el agua disponible.","La siccità riduce l'acqua disponibile."],
+  ["frana","deslizamiento de tierra","landslide","Hubo un deslizamiento de tierra.","C'è stata una frana."],
+  ["ondata di calore","ola de calor","","Se espera una ola de calor.","Si prevede un'ondata di calore."],
+  ["sistema di allerta precoce","sistema de alerta temprana","","Falta un sistema de alerta temprana.","Manca un sistema di allerta precoce."],
+  ["portatori di interesse","actores clave","stakeholders","Entrevistamos a los actores clave.","Abbiamo intervistato i portatori di interesse."],
+  ["rafforzamento delle capacità","fortalecimiento de capacidades","","El proyecto incluye fortalecimiento de capacidades.","Il progetto include il rafforzamento delle capacità."],
+  ["risultati (findings)","hallazgos","","Presentamos los hallazgos principales.","Presentiamo i risultati principali."],
+  ["finanziamento","financiamiento","","Buscamos financiamiento para la obra.","Cerchiamo finanziamenti per l'opera."],
+  ["linea di base","línea de base","","Primero definimos la línea de base.","Prima definiamo la linea di base."],
+  ["insediamenti informali","asentamientos informales","AR: barrios populares","El riesgo es mayor en los asentamientos informales.","Il rischio è maggiore negli insediamenti informali."],
+  ["sindaco","intendente (AR)","Spain: alcalde","Nos reunimos con el intendente.","Ci siamo riuniti con il sindaco."]]}
 ];
-const CARDS=[];GROUPS.forEach(g=>g.cards.forEach((c,i)=>CARDS.push({id:g.id+i,g:g.id,it:c[0],es:c[1],note:c[2]})));
+const CARDS=[];GROUPS.forEach(g=>g.cards.forEach((c,i)=>CARDS.push({id:g.id+i,g:g.id,it:c[0],es:c[1],note:c[2],ex:c[3]||"",exIt:c[4]||""})));
 
 const QUIZ=[
  ["I have a house.",["He una casa","Tengo una casa"],1,"avere → tener for possession. haber is only for compound tenses and hay."],
@@ -283,12 +354,12 @@ const PLAN=[
  ["Ending patterns","Convert 40 Italian nouns (-zione, -tà, -mento, -aggio). Mark each gender.","endings"],
  ["Sound shifts","Convert 30 words. Build three-language rows with French.","shifts"],
  ["Gender and false friends","Make the feminine family one card. Write 10 sentences using false friends correctly.","false"],
- ["Tenses","150 words about last week using only the indefinido and imperfecto.","twins"],
+ ["Tenses","150 words about last week using only the pretérito and imperfecto.","nb:past"],
  ["Irregular twins","Drill yo-go verbs and strong preterites out loud next to their Italian twins.","twins"],
  ["Light day","One episode of an Argentine series. Review your error log.",null],
  ["Ser / estar, gustar","Describe your Rome neighbourhood: 10 ser and 10 estar sentences.","traps"],
- ["Subjunctive splits","20 pairs: creo que es / no creo que sea. 10 cuando + subjunctive sentences.","traps"],
- ["Sequence and si","8 hypotheticals about the trip: Si tuviera más tiempo...","traps"],
+ ["Subjunctive splits","20 pairs: creo que es / no creo que sea. 10 cuando + subjunctive sentences.","nb:subj"],
+ ["Conditionals (si)","8 hypotheticals about the trip: Si tuviera más tiempo...","nb:si"],
  ["Pronouns, por / para","Rewrite 15 Italian sentences with da and per. Add the personal a.","traps"],
  ["Vos","Conjugate 15 verbs in vos. Shadow 10 minutes of porteño audio.","vos"],
  ["Connectors","200-word opinion text on urban flood risk using connectors from 5 functions.","connect"],
@@ -363,7 +434,7 @@ let cardFilter="all",cardDir="it-es",cardQueue=[],cardIdx=0;
 /* ---------------- views ---------------- */
 function view(name){
   document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-current",b.dataset.tab===name?"page":"false"));
-  ({today,bridges,cards,traps,vos})[name]();window.scrollTo(0,0);store.set("tab",name);
+  ({today,bridges,cards,traps,vos,notebook})[name]();window.scrollTo(0,0);store.set("tab",name);
 }
 document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>view(b.dataset.tab));
 
@@ -382,7 +453,7 @@ function today(){
   <button class="primary" id="eAdd">Add to log</button><ul class="log" id="eList"></ul></div>`;
   $("#view").innerHTML=h;
   document.querySelectorAll("[data-day]").forEach(c=>c.onchange=()=>{planDone[c.dataset.day]=c.checked;store.set("plan",planDone);today()});
-  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const g=b.dataset.go;if(g==="traps"||g==="vos")view(g);else{cardFilter=g;view("cards")}});
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const g=b.dataset.go;if(g.startsWith("nb:")){openNb=g.slice(3);view("notebook")}else if(g==="traps"||g==="vos")view(g);else{cardFilter=g;view("cards")}});
   document.querySelectorAll("[data-bridge]").forEach(b=>b.onclick=()=>{openGroup=b.dataset.bridge;view("bridges")});
   const renderLog=()=>{$("#eList").innerHTML=errors.length?errors.map((e,i)=>`<li><button class="x" data-del="${i}" aria-label="Delete">✕</button><span class="lang-it">${esc(e.w)}</span><br><span class="lang-es">${esc(e.c)}</span> ${spk(e.c)}</li>`).join(""):`<li class="muted">No entries yet.</li>`;
     document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{errors.splice(+b.dataset.del,1);store.set("errors",errors);renderLog()})};
@@ -396,7 +467,7 @@ function bridges(){
   GROUPS.forEach(g=>{
     h+=`<details class="group" ${openGroup===g.id?"open":""}><summary>${esc(g.name)}<span class="count">${g.cards.length} pairs</span></summary><div class="body"><div class="rule">${esc(g.rule)}</div>`;
     g.cards.forEach(c=>{const [a,b]=["endings","shifts","gender"].includes(g.id)?diff(c[0],c[1]):[esc(c[0]),esc(c[1])];
-      h+=`<div class="bridge"><span class="lang-it">${a}</span><span class="arrow" aria-hidden="true">→</span><span class="lang-es">${b}</span>${spk(c[1])}${c[2]?`<span class="note">${esc(c[2])}</span>`:""}</div>`});
+      h+=`<div class="bridge"><span class="lang-it">${a}</span><span class="arrow" aria-hidden="true">→</span><span class="lang-es">${b}</span>${spk(c[1])}${c[2]?`<span class="note">${esc(c[2])}</span>`:""}${c[3]?`<div class="nb-ex inrow">${spk(c[3])}<div><div class="es">${esc(c[3])}</div><div class="it">${esc(c[4])}</div></div></div>`:""}</div>`});
     h+=`<div class="row" style="margin-top:10px"><button class="primary" data-practice="${g.id}">Practise these cards</button></div></div></details>`});
   $("#view").innerHTML=h;openGroup=null;
   document.querySelectorAll("[data-practice]").forEach(b=>b.onclick=()=>{cardFilter=b.dataset.practice;view("cards")});
@@ -424,11 +495,11 @@ function showCard(){
   const frontIt=cardDir==="it-es";
   const front=frontIt?`<span class="tag">Italiano</span><span class="word">${esc(c.it)}</span>${spk(c.it,"it")}<span class="sub">Say the Spanish out loud, then tap to check.</span>`
                      :`<span class="tag">Español</span><span class="word" style="color:var(--es)">${esc(c.es)}</span>${spk(c.es)}<span class="sub">Say the Italian, then tap to check.</span>`;
-  const back=`<span class="tag">${frontIt?"Español":"Italiano"}</span><span class="word">${frontIt?b:a}</span>${spk(frontIt?c.es:c.it,frontIt?"es":"it")}<span class="sub">${frontIt?a:b}</span>${c.note?`<span class="sub">${esc(c.note)}</span>`:""}`;
+  const back=`<span class="tag">${frontIt?"Español":"Italiano"}</span><span class="word">${frontIt?b:a}</span>${spk(frontIt?c.es:c.it,frontIt?"es":"it")}<span class="sub">${frontIt?a:b}</span>${c.note?`<span class="sub">${esc(c.note)}</span>`:""}${c.ex?`<div class="card-ex"><span class="es">${esc(c.ex)}</span> ${spk(c.ex)}<br><span class="it">${esc(c.exIt)}</span></div>`:""}`;
   area.innerHTML=`<div class="bar" aria-label="Progress"><i style="width:${cardIdx/cardQueue.length*100}%"></i></div>
    <div class="card" id="card" tabindex="0" role="button" aria-label="Flip card"><div class="inner"><div class="face front" ${frontIt?"":'style="background:var(--es-soft);border-color:var(--es)"'}>${front}</div><div class="face back" ${frontIt?"":'style="background:var(--it-soft);border-color:var(--it)"'}>${back}</div></div></div>
    <div class="row" id="grade" style="visibility:hidden"><button class="ghost" id="g0" style="flex:1">Again</button><button class="primary" id="g1" style="flex:1">Got it</button></div>`;
-  const card=$("#card");const flip=()=>{card.classList.toggle("flipped");$("#grade").style.visibility="visible";if(card.classList.contains("flipped")&&frontIt)say(c.es)};
+  const card=$("#card");card.addEventListener("pointerdown",()=>card.classList.add("mouse"));const flip=()=>{card.classList.toggle("flipped");$("#grade").style.visibility="visible";if(card.classList.contains("flipped")&&frontIt)say(c.es)};
   card.onclick=flip;card.onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}};
   $("#g0").onclick=()=>{boxes[c.id]=0;store.set("boxes",boxes);cardIdx++;showCard()};
   $("#g1").onclick=()=>{boxes[c.id]=Math.min(4,(boxes[c.id]||0)+1);store.set("boxes",boxes);cardIdx++;showCard()};
@@ -485,6 +556,85 @@ function showV(){
     else{fb.innerHTML=`<div class="fb no">It's <b>${esc(q.ans)}</b>. ${spk(q.ans)} <button class="ghost" id="vNext" style="margin-left:8px">Next</button></div>`;say(q.ans);$("#vNext").onclick=next}};
   $("#vCheck").onclick=check;inp.onkeydown=e=>{if(e.key==="Enter")check()};
   $("#vShow").onclick=()=>{$("#vFb").innerHTML=`<div class="fb near"><b>${esc(q.ans)}</b> ${spk(q.ans)} <button class="ghost" id="vNext" style="margin-left:8px">Next</button></div>`;say(q.ans);$("#vNext").onclick=next};
+}
+
+/* ---------------- notebook (grammar pages) ---------------- */
+const NB=[
+ {id:"present",t:"Present, regular",html:`
+  <p>Drop -ar / -er / -ir, add the ending. Same shape as your Italian page (o, i, a | iamo, ate, ano).</p>
+  ${grid("-AR · hablar (parlare)",["yo","o","nosotros","amos"],["tú / vos","as / <b>ás</b>","ustedes","an"],["él / ella","a","ellos","an"])}
+  ${grid("-ER · comer (mangiare)",["yo","o","nosotros","emos"],["tú / vos","es / <b>és</b>","ustedes","en"],["él / ella","e","ellos","en"])}
+  ${grid("-IR · vivir (vivere)",["yo","o","nosotros","imos"],["tú / vos","es / <b>ís</b>","ustedes","en"],["él / ella","e","ellos","en"])}
+  <p class="nb-note">No vosotros in Buenos Aires: <b>ustedes</b> is the only "you all". Vos stresses the ending: ha-BLÁS, co-MÉS, vi-VÍS.</p>
+  ${ex("Vos hablás muy bien.","Parli molto bene.")}${ex("Nosotros vivimos en Almagro.","Viviamo ad Almagro.")}`},
+ {id:"past",t:"Pretérito (finished past)",html:`
+  <p>Where Rome says <i>ho parlato</i>, Buenos Aires says <b>hablé</b>, even for this morning.</p>
+  ${grid("-AR · hablar",["yo","é","nosotros","amos"],["vos / tú","aste","ustedes","aron"],["él / ella","ó","ellos","aron"])}
+  ${grid("-ER / -IR · comer, vivir",["yo","í","nosotros","imos"],["vos / tú","iste","ustedes","ieron"],["él / ella","ió","ellos","ieron"])}
+  <p class="nb-note">The accent is the whole meaning: <b>hablo</b> = I speak, <b>habló</b> = he spoke.</p>
+  ${ex("Esta mañana hablé con mi clienta.","Stamattina ho parlato con la mia cliente.")}${ex("¿Comiste?","Hai mangiato?")}${ex("Ayer salimos tarde.","Ieri siamo usciti tardi.")}`},
+ {id:"imperf",t:"Imperfecto (background, habit)",html:`
+  <p>Italian <b>-vo, -vi, -va</b> becomes <b>-ba</b> for -ar verbs, and <b>-ía</b> for -er / -ir.</p>
+  ${grid("-AR · hablar (parlavo)",["yo","aba","nosotros","ábamos"],["vos / tú","abas","ustedes","aban"],["él / ella","aba","ellos","aban"])}
+  ${grid("-ER / -IR · comer (mangiavo)",["yo","ía","nosotros","íamos"],["vos / tú","ías","ustedes","ían"],["él / ella","ía","ellos","ían"])}
+  <p class="nb-note">Only three irregulars: <b>era</b> (ser), <b>iba</b> (ir), <b>veía</b> (ver).</p>
+  ${ex("Cuando era chica, vivía en Nueva York.","Quando ero piccola, vivevo a New York.")}${ex("Llovía y hacía frío.","Pioveva e faceva freddo.")}`},
+ {id:"future",t:"Futuro and condicional",html:`
+  <p>Keep the whole infinitive and add the ending. Italian drops the -e (parler-ò); Spanish keeps everything (hablar-é).</p>
+  ${grid("Futuro · hablar-",["yo","é","nosotros","emos"],["vos / tú","ás","ustedes","án"],["él / ella","á","ellos","án"])}
+  ${grid("Condicional · hablar-",["yo","ía","nosotros","íamos"],["vos / tú","ías","ustedes","ían"],["él / ella","ía","ellos","ían"])}
+  <p class="nb-note">Short stems match Italian: tendr- (terr-), podr- (potr-), sabr- (sapr-), har- (far-), dir- (dir-). In speech, porteños use <b>voy a + infinitive</b> for the future.</p>
+  ${ex("Mañana voy a trabajar desde casa.","Domani lavorerò da casa.")}${ex("Me gustaría ir.","Mi piacerebbe andare.")}`},
+ {id:"subj",t:"Subjuntivo",html:`
+  <p><b>Present:</b> swap the vowel. -ar takes e; -er / -ir take a (just like Italian -ere / -ire).</p>
+  ${grid("-AR · hable (parli)",["yo","e","nosotros","emos"],["vos / tú","es","ustedes","en"],["él / ella","e","ellos","en"])}
+  ${grid("-ER / -IR · coma, viva (mangi, viva)",["yo","a","nosotros","amos"],["vos / tú","as","ustedes","an"],["él / ella","a","ellos","an"])}
+  <p><b>Imperfect:</b> take ellos in the pretérito, drop -ron, add -ra. hablaron → hablara (parlassi); tuvieron → tuviera (avessi); fueron → fuera (fossi).</p>
+  ${grid("hablar → hablara (parlassi)",["yo","hablara","nosotros","habláramos"],["vos / tú","hablaras","ustedes","hablaran"],["él / ella","hablara","ellos","hablaran"])}
+  <p class="nb-note">The big split from Italian: <b>creo que es</b> (not sea), but <b>no creo que sea</b>. And <b>cuando llegues</b>, never cuando llegarás.</p>
+  ${ex("Espero que estés bien.","Spero che tu stia bene.")}${ex("No creo que sea fácil.","Non credo che sia facile.")}${ex("Cuando llegues, avisame.","Quando arrivi, avvisami.")}`},
+ {id:"si",t:"Conditionals (si clauses)",html:`
+  <p>Your Italian page, in Spanish. Same four types, same rule: <b>never conditional after si</b> (se avrei ✗ → si tendría ✗).</p>
+  ${rule("1 · Real / likely","Si + present","present or future")}
+  ${ex("Si como demasiado, me siento mal.","Se mangio troppo, mi sento male.")}${ex("Si llueve mañana, me quedo en casa.","Se piove domani, resterò a casa.")}
+  ${rule("2 · Hypothetical present","Si + imperfect subjunctive","present conditional")}
+  ${ex("Si tuviera más plata, viajaría más.","Se avessi più soldi, viaggerei di più.")}${ex("Si fuera vos, no lo haría.","Se fossi te, non lo farei.")}
+  ${rule("3 · Hypothetical past","Si + pluperfect subjunctive","past conditional")}
+  ${ex("Si no hubieran cancelado los vuelos, habría llegado.","Se non avessero annullato i voli, sarebbe arrivato.")}
+  ${rule("4 · Mixed: unreal past, present result","Si + pluperfect subjunctive","present conditional")}
+  ${ex("Si no hubieran cancelado los vuelos, él estaría acá hoy.","Se non avessero annullato i voli, lui sarebbe qui oggi.")}
+  <p class="nb-note">In speech you will hear <i>te lo hubiera dicho</i> in the result clause. In the exam, write <b>habría dicho</b>.</p>`},
+ {id:"neg",t:"Negatives",html:`
+  <p>Simpler than French: just <b>no</b> before the verb (and before any pronouns). Like Italian <i>non</i>.</p>
+  ${rule("Present / future","no + verb","No hablo. No voy a ir.")}
+  ${rule("Compound past","no + haber + participle","No he terminado.")}
+  ${rule("Reflexive","no + pronoun + verb","No me maquillé.")}
+  <p>Double negatives are normal, exactly like Italian <i>non... mai</i>:</p>
+  ${ex("No voy nunca.","Non ci vado mai.")}${ex("No vi a nadie.","Non ho visto nessuno.")}${ex("No quiero nada.","Non voglio niente.")}
+  <p class="nb-note">nunca = mai, nada = niente, nadie = nessuno, tampoco = neanche, ni... ni = né... né.</p>`},
+ {id:"demo",t:"Demonstratives",html:`
+  <p>Three distances instead of Italian's two: near me, near you, over there.</p>
+  ${grid("este · this (questo)",["masc.","este","plural","estos"],["fem.","esta","plural","estas"])}
+  ${grid("ese · that, near you",["masc.","ese","plural","esos"],["fem.","esa","plural","esas"])}
+  ${grid("aquel · that, over there (quello)",["masc.","aquel","plural","aquellos"],["fem.","aquella","plural","aquellas"])}
+  <p class="nb-note">For an idea or something unnamed: <b>esto, eso, aquello</b> (ciò, questo, quello). No -ci / -là needed, the word already says the distance.</p>
+  ${ex("Esta casa es linda, pero prefiero aquella.","Questa casa è bella, ma preferisco quella.")}${ex("¿Qué es eso?","Cos'è quello?")}`},
+ {id:"q",t:"Question words and everyday words",html:`
+  ${grid("Questions (always with an accent)",["¿Cuándo?","Quando?","¿Dónde?","Dove?"],["¿Quién?","Chi?","¿Por qué?","Perché?"],["¿Qué?","Cosa? / Che?","¿Cómo?","Come?"],["¿Cuánto?","Quanto?","¿Cuál?","Quale?"])}
+  <p class="nb-note">The answer <b>porque</b> (because) is one word with no accent.</p>
+  ${grid("Place and time",["acá","qui (AR; Spain: aquí)","allá","là (AR; Spain: allí)"],["siempre","sempre","nunca","mai"],["seguido","spesso (AR; also a menudo)","a veces","a volte"],["ya","già","todavía","ancora"])}
+  ${ex("¿Dónde nos vemos? Acá, en la esquina.","Dove ci vediamo? Qui, all'angolo.")}${ex("Todavía no llegó.","Non è ancora arrivato.")}`}
+];
+function grid(title,...rows){
+  return `<div class="nb-grid"><div class="nb-title">${title}</div>${rows.map(r=>`<div class="nb-row"><span class="p">${r[0]}</span><span class="e">${r[1]}</span><span class="bar2" aria-hidden="true"></span><span class="p">${r[2]||""}</span><span class="e">${r[3]||""}</span></div>`).join("")}</div>`;
+}
+function rule(t,a,b){return `<div class="nb-rule"><div class="nb-title">${t}</div><div class="nb-row2"><span>${a}</span><span>${b}</span></div></div>`}
+function ex(es,itx){return `<div class="nb-ex">${spk(es)}<div><div class="es">${es}</div><div class="it">${itx}</div></div></div>`}
+let openNb=null;
+function notebook(){
+  let h=`<h2>Notebook</h2><p class="muted">Grammar pages in your notebook format: endings grid, then real sentences. Tap 🔊 to hear each one.</p>`;
+  NB.forEach(s=>{h+=`<details class="group nb" ${openNb===s.id?"open":""}><summary>${esc(s.t)}</summary><div class="body paper">${s.html}</div></details>`});
+  $("#view").innerHTML=h;openNb=null;
 }
 
 view(store.get("tab","today"));
