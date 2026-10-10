@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Puente: Spanish via Italian</title>
+<meta name="theme-color" content="#8B4A1F">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Puente">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF3F6; --surface:#FFFFFF; --ink:#1D2733; --muted:#5B6773; --line:#D3DEE6;
+  --es:#8B4A1F; --es-soft:#F4E7DC; --it:#C8611A; --it-soft:#FBEADD;
+  --cel:#3E86C4; --cel-soft:#DCEBF7; --ok:#2E7D5B; --ok-soft:#E1F1E8; --bad:#B3412E; --bad-soft:#F8E1DC;
+  --fs:18px; --ls:0; --ws:0;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#141A20; --surface:#1E262E; --ink:#E9EEF2; --muted:#9AA7B2; --line:#33404B;
+    --es:#E0A27A; --es-soft:#3A2A20; --it:#F0A060; --it-soft:#3D2A1B;
+    --cel:#7DB7E8; --cel-soft:#1F3344; --ok:#74C69D; --ok-soft:#1D3328; --bad:#F08A78; --bad-soft:#3D221E;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#141A20; --surface:#1E262E; --ink:#E9EEF2; --muted:#9AA7B2; --line:#33404B;
+  --es:#E0A27A; --es-soft:#3A2A20; --it:#F0A060; --it-soft:#3D2A1B;
+  --cel:#7DB7E8; --cel-soft:#1F3344; --ok:#74C69D; --ok-soft:#1D3328; --bad:#F08A78; --bad-soft:#3D221E;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);
+  font-family:"Atkinson Hyperlegible",Verdana,"Segoe UI",Arial,sans-serif;
+  font-size:var(--fs);line-height:1.6;letter-spacing:var(--ls);word-spacing:var(--ws)}
+button,input,select,textarea{font:inherit;color:inherit;letter-spacing:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--cel);outline-offset:2px}
+.wrap{max-width:720px;margin:0 auto;padding:16px 16px 110px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:6px 0 14px}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand h1{margin:0;font-size:1.5em;line-height:1.1}
+.brand h1 .a{color:var(--it)} .brand h1 .b{color:var(--es)}
+.brand small{color:var(--muted);font-size:.78em}
+.iconbtn{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.85em}
+h2{font-size:1.25em;margin:8px 0 6px}
+h3{font-size:1.05em;margin:18px 0 6px}
+p{margin:0 0 10px}
+.muted{color:var(--muted)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin:0 0 14px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.pill{border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:6px 14px;font-size:.88em}
+.pill[aria-pressed="true"]{background:var(--es);border-color:var(--es);color:#fff}
+.primary{background:var(--es);color:#fff;border:0;border-radius:12px;padding:12px 18px;font-weight:700}
+.ghost{background:transparent;border:1.5px solid var(--line);border-radius:12px;padding:10px 16px}
+.lang-it{color:var(--it);font-weight:700}
+.lang-es{color:var(--es);font-weight:700}
+mark.d-es{background:var(--es-soft);color:var(--es);border-bottom:2px solid var(--es);padding:0 1px;border-radius:2px}
+mark.d-it{background:var(--it-soft);color:var(--it);border-bottom:2px dotted var(--it);padding:0 1px;border-radius:2px}
+.speak{border:0;background:var(--cel-soft);color:var(--cel);border-radius:999px;width:38px;height:38px;flex:0 0 38px;font-size:1em;line-height:1}
+/* tab bar */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom,0px);z-index:5}
+nav.tabs .in{max-width:720px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+nav.tabs button{background:none;border:0;padding:10px 2px 12px;font-size:.78em;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px}
+nav.tabs button .ic{font-size:1.35em;line-height:1}
+nav.tabs button[aria-current="page"]{color:var(--es);font-weight:700}
+nav.tabs button[aria-current="page"] .ic{transform:translateY(-1px)}
+/* bridge rows */
+.bridge{display:grid;grid-template-columns:1fr auto 1fr auto;gap:10px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.bridge:first-of-type{border-top:0}
+.bridge .arrow{color:var(--muted)}
+.bridge .note{grid-column:1/-1;font-size:.84em;color:var(--muted);margin-top:-4px}
+.rule{background:var(--cel-soft);border-radius:10px;padding:10px 12px;margin:6px 0 10px}
+details.group{background:var(--surface);border:1px solid var(--line);border-radius:14px;margin:0 0 10px}
+details.group summary{list-style:none;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700}
+details.group summary::-webkit-details-marker{display:none}
+details.group summary .count{font-weight:400;color:var(--muted);font-size:.85em}
+details.group .body{padding:0 16px 14px}
+/* flashcard */
+.card{perspective:1200px;margin:6px 0 14px}
+.card .inner{position:relative;min-height:260px;transition:transform .45s ease;transform-style:preserve-3d}
+.card.flipped .inner{transform:rotateY(180deg)}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:18px;padding:22px;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;gap:10px;border:2px solid}
+.face.front{background:var(--it-soft);border-color:var(--it)}
+.face.back{background:var(--es-soft);border-color:var(--es);transform:rotateY(180deg)}
+.face .tag{font-size:.78em;color:var(--muted)}
+.face .word{font-size:1.75em;font-weight:700;line-height:1.25}
+.face.front .word{color:var(--it)} .face.back .word{color:var(--es)}
+.face .sub{font-size:.9em;color:var(--muted);max-width:32ch}
+@media (prefers-reduced-motion:reduce){.card .inner{transition:none}}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--es);border-radius:99px}
+/* quiz */
+.opt{display:block;width:100%;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:12px 14px;margin:8px 0}
+.opt.right{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.explain{border-left:4px solid var(--cel);padding:8px 12px;background:var(--cel-soft);border-radius:0 10px 10px 0;margin-top:8px}
+input[type=text],textarea{width:100%;background:var(--surface);border:2px solid var(--line);border-radius:12px;padding:12px 14px}
+input[type=text]:focus,textarea:focus{border-color:var(--cel);outline:none}
+.fb{margin-top:10px;padding:10px 12px;border-radius:10px}
+.fb.ok{background:var(--ok-soft);color:var(--ok)} .fb.no{background:var(--bad-soft);color:var(--bad)} .fb.near{background:var(--cel-soft);color:var(--cel)}
+.keys{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.keys button{border:1px solid var(--line);background:var(--surface);border-radius:8px;padding:4px 12px}
+/* plan */
+.day{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:start;padding:12px 0;border-top:1px solid var(--line)}
+.day:first-child{border-top:0}
+.day input{width:24px;height:24px;margin-top:3px;accent-color:var(--es)}
+.day .n{font-weight:700}
+.day.done .t{text-decoration:line-through;color:var(--muted)}
+.today{border:2px solid var(--es)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:var(--bg);border-radius:12px;padding:10px;text-align:center}
+.stat b{display:block;font-size:1.4em;color:var(--es)}
+.stat span{font-size:.8em;color:var(--muted)}
+.log li{padding:10px 0;border-top:1px solid var(--line);list-style:none}
+.log{padding:0;margin:0}
+.log .x{float:right;border:0;background:none;color:var(--muted)}
+.hide{display:none!important}
+.settings label{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:8px 0}
+dialog{border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);max-width:420px;width:calc(100% - 32px)}
+dialog::backdrop{background:rgba(0,0,0,.35)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><h1><span class="a">Pon</span><span class="b">te</span> → <span class="b">Puente</span></h1></div>
+    <button class="iconbtn" id="openSettings" aria-haspopup="dialog">Aa Settings</button>
+  </header>
+  <main id="view" aria-live="polite"></main>
+</div>
+
+<nav class="tabs" aria-label="Sections"><div class="in">
+  <button data-tab="today"><span class="ic" aria-hidden="true">☀️</span>Today</button>
+  <button data-tab="bridges"><span class="ic" aria-hidden="true">🌉</span>Bridges</button>
+  <button data-tab="cards"><span class="ic" aria-hidden="true">🃏</span>Cards</button>
+  <button data-tab="traps"><span class="ic" aria-hidden="true">🪤</span>Traps</button>
+  <button data-tab="vos"><span class="ic" aria-hidden="true">🧉</span>Vos</button>
+</div></nav>
+
+<dialog id="settings">
+  <h2>Reading and listening</h2>
+  <div class="settings">
+    <label>Text size <input type="range" id="sz" min="15" max="24" step="1"></label>
+    <label>Extra letter spacing <input type="checkbox" id="sp"></label>
+    <label>Speech speed
+      <select id="rate"><option value="0.7">Slow</option><option value="0.9">Relaxed</option><option value="1">Normal</option></select></label>
+    <label>Theme
+      <select id="theme"><option value="">Match device</option><option value="light">Light</option><option value="dark">Dark</option></select></label>
+  </div>
+  <p class="muted" id="voiceInfo"></p>
+  <div class="row"><button class="primary" id="closeSettings">Done</button></div>
+</dialog>
+
+<script>
+/* ---------------- storage ---------------- */
+const store={
+  get(k,d){try{const v=localStorage.getItem("puente:"+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("puente:"+k,JSON.stringify(v))}catch(e){}}
+};
+
+/* ---------------- data ---------------- */
+const GROUPS=[
+ {id:"endings",name:"Ending patterns",rule:"Italian endings turn into Spanish endings, and the gender usually travels with them. -zione → -ción, -tà → -dad, -aggio → -aje, -ore → -or.",cards:[
+  ["informazione","información","-zione → -ción, feminine"],["università","universidad","-tà → -dad, feminine"],
+  ["città","ciudad","-tà → -dad"],["libertà","libertad",""],["gioventù","juventud","-tù → -tud"],
+  ["bellezza","belleza","-ezza → -eza"],["esperienza","experiencia","-enza → -encia"],["importanza","importancia","-anza → -ancia"],
+  ["energia","energía","stressed -ia → -ía"],["movimento","movimiento","action noun → -miento"],["momento","momento","learned word stays -mento"],
+  ["viaggio","viaje","-aggio → -aje, masculine"],["messaggio","mensaje",""],["colore","color","-ore → -or, masculine"],
+  ["giocatore","jugador","-atore → -ador"],["venditore","vendedor","-itore → -edor"],["pericoloso","peligroso","-oso stays"],
+  ["pubblico","público","-ico gets an accent"],["possibile","posible","-ibile → -ible"],["facilmente","fácilmente","adverb keeps the accent"]]},
+ {id:"shifts",name:"Sound shifts",rule:"Stressed e → ie, stressed o/uo → ue, -tt- → -ch-, f- → h-, -gli-/-cchi- → -j-, chi-/pi- → ll-, gn/nn → ñ, s+consonant → es-, p/t/c between vowels → b/d/g.",cards:[
+  ["tempo","tiempo","e → ie"],["festa","fiesta","e → ie"],["sempre","siempre","e → ie"],["porta","puerta","o → ue"],
+  ["fuoco","fuego","uo → ue, c → g"],["nuovo","nuevo","uo → ue"],["notte","noche","-tt- → -ch- (French nuit)"],
+  ["latte","leche","-tt- → -ch- (French lait)"],["otto","ocho","-tt- → -ch- (French huit)"],["fatto","hecho","f → h, -tt- → -ch-"],
+  ["fare","hacer","f → h"],["figlio","hijo","f → h, -gli- → -j-"],["fumo","humo","f → h"],["fame","hambre","f → h"],
+  ["meglio","mejor","-gli- → -j-"],["occhio","ojo","-cchi- → -j-"],["vecchio","viejo","-cchi- → -j-"],
+  ["chiamare","llamar","chi- → ll-"],["chiave","llave","chi- → ll-"],["pioggia","lluvia","pi- → ll-"],
+  ["montagna","montaña","gn → ñ"],["sogno","sueño","gn → ñ, o → ue"],["anno","año","nn → ñ"],
+  ["studio","estudio","s+consonant → es-"],["scuola","escuela","sc- → esc-, uo → ue"],["sapere","saber","p → b between vowels"],
+  ["vita","vida","t → d between vowels"],["amico","amigo","c → g between vowels"],["avere","haber","v → b"],
+  ["governo","gobierno","v → b, e → ie"],["attenzione","atención","double letters → single"]]},
+ {id:"twins",name:"Irregular twins",rule:"Spanish verbs are irregular in the same places as Italian. Learn them in pairs.",cards:[
+  ["(io) tengo","(yo) tengo","identical: tenere / tener"],["(io) vengo","(yo) vengo","identical"],["(io) pongo","(yo) pongo","porre / poner"],
+  ["(io) salgo","(yo) salgo","salire / salir (= go out!)"],["(che) tenga","(que) tenga","subjunctive, identical"],["(che) venga","(que) venga","identical"],
+  ["(io) feci","(yo) hice","passato remoto / indefinido"],["(io) dissi","(yo) dije",""],["(io) venni","(yo) vine",""],
+  ["(io) seppi","(yo) supe",""],["(io) volli","(yo) quise","volere / querer"],["(io) fui","(yo) fui","essere = ser and ir"],
+  ["farò","haré","short future"],["potrò","podré",""],["saprò","sabré",""],["verrò","vendré","Spanish adds d"],
+  ["terrò","tendré","Spanish adds d"],["(che) sia","(que) sea",""],["(che) vada","(que) vaya",""],
+  ["(che) abbia","(que) haya","auxiliary"],["(che) sappia","(que) sepa",""],["(che) stia","(que) esté",""]]},
+ {id:"false",name:"False friends",rule:"Same shape, different meaning. The Italian word is on the left; the right side is what you actually want in Spanish.",cards:[
+  ["burro (butter)","manteca","burro = donkey!"],["imbarazzata","me da vergüenza","embarazada = pregnant!"],
+  ["salire (go up)","subir","salir = go out"],["uscire","salir",""],["guardare (look)","mirar","guardar = keep"],
+  ["largo (wide)","ancho","largo = long"],["caldo (hot)","caliente","caldo = broth"],["camera (room)","pieza / habitación","cámara = camera"],
+  ["pronto (ready)","listo","pronto = soon"],["subito","enseguida","súbito = sudden"],["rumore","ruido","rumor = rumour"],
+  ["vaso (vase)","florero","vaso = drinking glass"],["carta (paper)","papel","carta = letter"],["tasca (pocket)","bolsillo","tasca = tavern"],
+  ["officina","taller","oficina = office"],["autista (driver)","chofer / conductor","autista = autistic"],
+  ["morbido (soft)","suave / blando","mórbido = morbid"],["prendere un caffè","tomar un café","prender = turn on (AR)"],
+  ["anche","también","aunque = although"],["ho (avere)","tengo (tener)","haber is only an auxiliary"]]},
+ {id:"gender",name:"Gender flips",rule:"Masculine in Italian, feminine in Spanish (and a few the other way). Learn them as one family.",cards:[
+  ["il latte","la leche",""],["il sangue","la sangre",""],["il fiore","la flor",""],["il miele","la miel",""],
+  ["il sale","la sal",""],["il naso","la nariz",""],["il costume","la costumbre","custom"],["il segnale","la señal",""],
+  ["il carcere","la cárcel",""],["la fine","el fin","the other way"],["l'origine","el origen","the other way"],["l'analisi","el análisis","the other way"]]},
+ {id:"connect",name:"C1 connectors",rule:"Use connectors from at least five different functions in every C1 text.",cards:[
+  ["tuttavia","sin embargo / no obstante","contrast"],["inoltre","además / asimismo","adding"],["invece","en cambio","contrast"],
+  ["quindi, pertanto","por lo tanto / por consiguiente","consequence"],["dato che","ya que / dado que","cause"],
+  ["benché","aunque / si bien","concession; si bien + indicative"],["affinché","para que","+ subjunctive"],
+  ["a meno che","a menos que","+ subjunctive"],["purché","siempre que / con tal de que","+ subjunctive"],
+  ["cioè","es decir / o sea","reformulation"],["infatti","de hecho","emphasis"],["insomma","en definitiva","conclusion"],
+  ["secondo me","a mi juicio","opinion"]]},
+ {id:"argentina",name:"Buenos Aires words",rule:"What porteños actually say, many with Italian roots.",cards:[
+  ["lavoro","laburo","work (lunfardo)"],["ciao","chau","only for goodbye"],["fiacca","fiaca","laziness: tengo fiaca"],
+  ["faccia","facha","looks, style"],["nonno","nono",""],["appartamento","departamento","Spain: piso"],
+  ["frigorifero","heladera",""],["autobus","colectivo / bondi",""],["metro","subte",""],["guidare","manejar",""],
+  ["prendere (il bus)","agarrar / tomar","never coger in Argentina"],["fragola","frutilla",""],["avocado","palta",""],
+  ["maglietta","remera",""],["piscina","pileta",""],["mi manchi","te extraño",""]]},
+ {id:"work",name:"Your work vocabulary",rule:"Explain your own projects in Spanish for one minute a day.",cards:[
+  ["resilienza urbana","resiliencia urbana",""],["gestione del rischio di disastri","gestión del riesgo de desastres",""],
+  ["alluvione","inundación","flood"],["siccità","sequía","drought"],["frana","deslizamiento de tierra","landslide"],
+  ["ondata di calore","ola de calor",""],["sistema di allerta precoce","sistema de alerta temprana",""],
+  ["portatori di interesse","actores clave","stakeholders"],["rafforzamento delle capacità","fortalecimiento de capacidades",""],
+  ["risultati (findings)","hallazgos",""],["finanziamento","financiamiento",""],["linea di base","línea de base",""],
+  ["insediamenti informali","asentamientos informales","AR: barrios populares"],["sindaco","intendente (AR)","Spain: alcalde"]]}
+];
+const CARDS=[];GROUPS.forEach(g=>g.cards.forEach((c,i)=>CARDS.push({id:g.id+i,g:g.id,it:c[0],es:c[1],note:c[2]})));
+
+const QUIZ=[
+ ["I have a house.",["He una casa","Tengo una casa"],1,"avere → tener for possession. haber is only for compound tenses and hay."],
+ ["I think it's true.",["Creo que es verdad","Creo que sea verdad"],0,"Affirmative opinion takes the indicative in Spanish, unlike Italian penso che sia."],
+ ["I don't think it's true.",["No creo que es verdad","No creo que sea verdad"],1,"Negated opinion = doubt = subjunctive."],
+ ["When you arrive, call me.",["Cuando llegarás, llamame","Cuando llegues, llamame"],1,"Never the future after cuando. Future time clauses take the subjunctive."],
+ ["I see María.",["Veo María","Veo a María"],1,"Personal a before a specific person as direct object."],
+ ["My house is in Almagro.",["La mi casa está en Almagro","Mi casa está en Almagro"],1,"No article with possessives."],
+ ["I'm thinking about you.",["Pienso a vos","Pienso en vos"],1,"pensare a → pensar en."],
+ ["It's very good.",["Es mucho bueno","Es muy bueno"],1,"muy before adjectives and adverbs; mucho with nouns and verbs."],
+ ["I work a lot.",["Trabajo muy","Trabajo mucho"],1,"mucho modifies verbs."],
+ ["I asked her for a favour.",["Le pregunté un favor","Le pedí un favor"],1,"pedir = ask for something; preguntar = ask a question."],
+ ["There are many problems.",["Hay muchos problemas","Hayan muchos problemas"],0,"hay is invariable: singular and plural."],
+ ["I went home yesterday (Buenos Aires).",["Fui a casa ayer","Soy ido a casa ayer"],0,"Spanish never uses ser as an auxiliary. In Argentina, the indefinido is the default."],
+ ["The milk is cold.",["El leche está frío","La leche está fría"],1,"la leche is feminine (il latte is masculine)."],
+ ["The party is at my place.",["La fiesta está en mi casa","La fiesta es en mi casa"],1,"Events take ser for location."],
+ ["I'm ready.",["Soy lista","Estoy lista"],1,"ser listo = clever; estar listo = ready."],
+ ["I'm so embarrassed.",["Estoy re embarazada","Me da mucha vergüenza"],1,"embarazada = pregnant."],
+ ["We're going up to the third floor.",["Salimos al tercer piso","Subimos al tercer piso"],1,"salir = go out; subir = go up."],
+ ["I'll tell it to him.",["Le lo digo","Se lo digo"],1,"le/les → se before lo/la/los/las."],
+ ["I've been studying for three years.",["Estudio da tres años","Hace tres años que estudio"],1,"Italian da + time → hace... que / desde hace / llevar + gerund."],
+ ["Thanks for everything.",["Gracias para todo","Gracias por todo"],1,"Thanks, cause, exchange → por."],
+ ["I'm studying for the DELE.",["Estudio por el DELE","Estudio para el DELE"],1,"Purpose or goal → para."],
+ ["Take the bus (said in Buenos Aires).",["Cogé el colectivo","Tomá el colectivo"],1,"coger is vulgar in Argentina. Use tomar or agarrar."],
+ ["Can you come? (to a friend in Buenos Aires)",["¿Podés venir?","¿Puedés venir?"],0,"vos has no stem change: podés, querés, tenés."],
+ ["I like medialunas.",["Me gusta las medialunas","Me gustan las medialunas"],1,"gustar agrees with what is liked, like piacere."],
+ ["If I had time, I would come.",["Si tendría tiempo, vendría","Si tuviera tiempo, vendría"],1,"Never conditional after si. Imperfect subjunctive + conditional, as in Italian."],
+ ["I hope you come.",["Espero que vienes","Espero que vengas"],1,"Wishes take the subjunctive, as in Italian."],
+ ["What matters is the result.",["Eso que importa es el resultado","Lo que importa es el resultado"],1,"ciò che → lo que (neuter lo)."],
+ ["Attention, please.",["Attención, por favor","Atención, por favor"],1,"Only C, R, L, N double in Spanish (CaRoLiNa)."],
+ ["I miss my dad.",["Me falta mi papá","Extraño a mi papá"],1,"In Argentina: extrañar. Note the personal a."],
+ ["This morning I had a meeting (Buenos Aires).",["Esta mañana he tenido una reunión","Esta mañana tuve una reunión"],1,"Porteños use the indefinido even for today."]
+];
+
+const VOS=[
+ ["hablar","hablás","hablá"],["comer","comés","comé"],["vivir","vivís","viví"],["tener","tenés","tené"],
+ ["querer","querés",null],["poder","podés",null],["venir","venís","vení"],["decir","decís","decí"],
+ ["hacer","hacés","hacé"],["dormir","dormís","dormí"],["pedir","pedís","pedí"],["poner","ponés","poné"],
+ ["salir","salís","salí"],["ser","sos","sé"],["ir","vas","andá"],["trabajar","trabajás","trabajá"],
+ ["escribir","escribís","escribí"],["pensar","pensás","pensá"],["volver","volvés","volvé"],["empezar","empezás","empezá"],
+ ["contar","contás","contá"],["mirar","mirás","mirá"],["saber","sabés",null],["entender","entendés","entendé"],
+ ["sentarse",null,"sentate"],["fijarse",null,"fijate"],["acordarse",null,"acordate"],["quedarse",null,"quedate"]
+];
+
+const PLAN=[
+ ["Baseline","Free online level test, cold. Record a 3-minute voice memo about your work.",null],
+ ["Ending patterns","Convert 40 Italian nouns (-zione, -tà, -mento, -aggio). Mark each gender.","endings"],
+ ["Sound shifts","Convert 30 words. Build three-language rows with French.","shifts"],
+ ["Gender and false friends","Make the feminine family one card. Write 10 sentences using false friends correctly.","false"],
+ ["Tenses","150 words about last week using only the indefinido and imperfecto.","twins"],
+ ["Irregular twins","Drill yo-go verbs and strong preterites out loud next to their Italian twins.","twins"],
+ ["Light day","One episode of an Argentine series. Review your error log.",null],
+ ["Ser / estar, gustar","Describe your Rome neighbourhood: 10 ser and 10 estar sentences.","traps"],
+ ["Subjunctive splits","20 pairs: creo que es / no creo que sea. 10 cuando + subjunctive sentences.","traps"],
+ ["Sequence and si","8 hypotheticals about the trip: Si tuviera más tiempo...","traps"],
+ ["Pronouns, por / para","Rewrite 15 Italian sentences with da and per. Add the personal a.","traps"],
+ ["Vos","Conjugate 15 verbs in vos. Shadow 10 minutes of porteño audio.","vos"],
+ ["Connectors","200-word opinion text on urban flood risk using connectors from 5 functions.","connect"],
+ ["Placement test","Take the school's placement test. Re-record your memo and compare.","work"]
+];
+
+/* ---------------- helpers ---------------- */
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const strip=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+function lcsMask(a,b){
+  const A=[...a.toLowerCase()],Bc=[...b.toLowerCase()],n=A.length,m=Bc.length;
+  const dp=Array.from({length:n+1},()=>new Array(m+1).fill(0));
+  for(let i=n-1;i>=0;i--)for(let j=m-1;j>=0;j--)
+    dp[i][j]=A[i]===Bc[j]?dp[i+1][j+1]+1:Math.max(dp[i+1][j],dp[i][j+1]);
+  const ma=new Array(n).fill(false),mb=new Array(m).fill(false);let i=0,j=0;
+  while(i<n&&j<m){if(A[i]===Bc[j]){ma[i]=mb[j]=true;i++;j++}else if(dp[i+1][j]>=dp[i][j+1])i++;else j++}
+  return [ma,mb];
+}
+function diff(itw,esw){
+  const [ma,mb]=lcsMask(itw,esw);
+  const paint=(w,mask,cls)=>{let o="",run="",on=null;[...w].forEach((ch,k)=>{const d=!mask[k]&&ch.trim()!=="";
+    if(on===null)on=d; if(d!==on){o+=on?`<mark class="${cls}">${esc(run)}</mark>`:esc(run);run="";on=d}run+=ch});
+    o+=on?`<mark class="${cls}">${esc(run)}</mark>`:esc(run);return o};
+  return [paint(itw,ma,"d-it"),paint(esw,mb,"d-es")];
+}
+/* speech */
+let voices=[];
+function loadVoices(){try{voices=speechSynthesis.getVoices()}catch(e){voices=[]}}
+if("speechSynthesis" in window){loadVoices();speechSynthesis.onvoiceschanged=loadVoices}
+function pickVoice(lang){
+  const pref=lang==="es"?["es-AR","es-419","es-US","es-MX","es-ES","es"]:["it-IT","it"];
+  for(const p of pref){const v=voices.find(v=>v.lang&&v.lang.replace("_","-").toLowerCase().startsWith(p.toLowerCase()));if(v)return v}
+  return null;
+}
+function say(text,lang="es"){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text.replace(/\(.*?\)/g,"").replace(/\//g,", "));
+  const v=pickVoice(lang);if(v)u.voice=v;u.lang=v?v.lang:(lang==="es"?"es-AR":"it-IT");
+  u.rate=parseFloat(settings.rate||0.9);speechSynthesis.speak(u);
+}
+document.addEventListener("click",e=>{const b=e.target.closest("[data-say]");if(b){e.stopPropagation();say(b.dataset.say,b.dataset.lang||"es")}});
+const spk=(t,l="es")=>`<button class="speak" data-say="${esc(t)}" data-lang="${l}" aria-label="Listen: ${esc(t)}">🔊</button>`;
+
+/* ---------------- settings ---------------- */
+const settings=store.get("settings",{fs:18,sp:false,rate:"0.9",theme:""});
+function applySettings(){
+  const r=document.documentElement.style;r.setProperty("--fs",settings.fs+"px");
+  r.setProperty("--ls",settings.sp?"0.04em":"0");r.setProperty("--ws",settings.sp?"0.12em":"0");
+  if(settings.theme)document.documentElement.setAttribute("data-theme",settings.theme);else document.documentElement.removeAttribute("data-theme");
+  store.set("settings",settings);
+}
+applySettings();
+$("#sz").value=settings.fs;$("#sp").checked=settings.sp;$("#rate").value=settings.rate;$("#theme").value=settings.theme;
+$("#sz").oninput=e=>{settings.fs=+e.target.value;applySettings()};
+$("#sp").onchange=e=>{settings.sp=e.target.checked;applySettings()};
+$("#rate").onchange=e=>{settings.rate=e.target.value;applySettings();say("Hola, ¿cómo andás?")};
+$("#theme").onchange=e=>{settings.theme=e.target.value;applySettings()};
+$("#openSettings").onclick=()=>{loadVoices();const v=pickVoice("es");
+  $("#voiceInfo").textContent=("speechSynthesis" in window)?(v?`Spanish voice: ${v.name} (${v.lang}).`:"No Spanish voice found on this device. Add one in your device's language settings."):"This browser can't read text aloud.";
+  $("#settings").showModal()};
+$("#closeSettings").onclick=()=>$("#settings").close();
+
+/* ---------------- state ---------------- */
+let boxes=store.get("boxes",{}); // card id -> 0..4
+let planDone=store.get("plan",{});
+let errors=store.get("errors",[]);
+let quizStats=store.get("quiz",{right:0,total:0});
+let cardFilter="all",cardDir="it-es",cardQueue=[],cardIdx=0;
+
+/* ---------------- views ---------------- */
+function view(name){
+  document.querySelectorAll("nav.tabs button").forEach(b=>b.setAttribute("aria-current",b.dataset.tab===name?"page":"false"));
+  ({today,bridges,cards,traps,vos})[name]();window.scrollTo(0,0);store.set("tab",name);
+}
+document.querySelectorAll("nav.tabs button").forEach(b=>b.onclick=()=>view(b.dataset.tab));
+
+function today(){
+  const next=PLAN.findIndex((_,i)=>!planDone[i]);const learned=Object.values(boxes).filter(v=>v>=3).length;
+  const pct=Math.round(Object.keys(planDone).filter(k=>planDone[k]).length/PLAN.length*100);
+  let h=`<div class="panel"><h2>${next===-1?"Plan complete. ¡Bárbaro!":"Day "+(next+1)+": "+PLAN[next][0]}</h2>`;
+  if(next!==-1){h+=`<p>${esc(PLAN[next][1])}</p><p class="muted">Session shape: 20 min pattern, 20 min output, 20 to 30 min listening, 5 min error log.</p>`;
+    if(PLAN[next][2])h+=`<div class="row"><button class="primary" data-go="${PLAN[next][2]}">Start practice</button>${["endings","shifts","twins","false","gender","connect","argentina","work"].includes(PLAN[next][2])?`<button class="ghost" data-bridge="${PLAN[next][2]}">Read the pattern</button>`:""}</div>`}
+  h+=`</div><div class="panel"><div class="stats"><div class="stat"><b>${pct}%</b><span>of the plan</span></div><div class="stat"><b>${learned}</b><span>cards learned</span></div><div class="stat"><b>${quizStats.total?Math.round(quizStats.right/quizStats.total*100)+"%":"–"}</b><span>traps avoided</span></div></div></div>`;
+  h+=`<div class="panel"><h2>14-day plan</h2>`;
+  PLAN.forEach((d,i)=>{h+=`<div class="day ${planDone[i]?"done":""}"><input type="checkbox" id="d${i}" data-day="${i}" ${planDone[i]?"checked":""}><label for="d${i}"><span class="n">Day ${i+1}: ${esc(d[0])}</span><br><span class="t muted">${esc(d[1])}</span></label></div>`});
+  h+=`</div><div class="panel"><h2>Error log</h2><p class="muted">Write what you said, then the correct form. Read this before every session.</p>
+  <input type="text" id="eW" placeholder="I wrote or said..." aria-label="What I wrote or said"><div style="height:8px"></div>
+  <input type="text" id="eC" placeholder="Correct form..." aria-label="Correct form"><div style="height:8px"></div>
+  <button class="primary" id="eAdd">Add to log</button><ul class="log" id="eList"></ul></div>`;
+  $("#view").innerHTML=h;
+  document.querySelectorAll("[data-day]").forEach(c=>c.onchange=()=>{planDone[c.dataset.day]=c.checked;store.set("plan",planDone);today()});
+  document.querySelectorAll("[data-go]").forEach(b=>b.onclick=()=>{const g=b.dataset.go;if(g==="traps"||g==="vos")view(g);else{cardFilter=g;view("cards")}});
+  document.querySelectorAll("[data-bridge]").forEach(b=>b.onclick=()=>{openGroup=b.dataset.bridge;view("bridges")});
+  const renderLog=()=>{$("#eList").innerHTML=errors.length?errors.map((e,i)=>`<li><button class="x" data-del="${i}" aria-label="Delete">✕</button><span class="lang-it">${esc(e.w)}</span><br><span class="lang-es">${esc(e.c)}</span> ${spk(e.c)}</li>`).join(""):`<li class="muted">No entries yet.</li>`;
+    document.querySelectorAll("[data-del]").forEach(b=>b.onclick=()=>{errors.splice(+b.dataset.del,1);store.set("errors",errors);renderLog()})};
+  renderLog();
+  $("#eAdd").onclick=()=>{const w=$("#eW").value.trim(),c=$("#eC").value.trim();if(!w||!c)return;errors.unshift({w,c});store.set("errors",errors);$("#eW").value=$("#eC").value="";renderLog()};
+}
+
+let openGroup=null;
+function bridges(){
+  let h=`<h2>Bridges</h2><p class="muted">Orange marks what changes in the Italian; brown marks what Spanish puts there instead. Tap 🔊 to hear the Spanish.</p>`;
+  GROUPS.forEach(g=>{
+    h+=`<details class="group" ${openGroup===g.id?"open":""}><summary>${esc(g.name)}<span class="count">${g.cards.length} pairs</span></summary><div class="body"><div class="rule">${esc(g.rule)}</div>`;
+    g.cards.forEach(c=>{const [a,b]=["endings","shifts","gender"].includes(g.id)?diff(c[0],c[1]):[esc(c[0]),esc(c[1])];
+      h+=`<div class="bridge"><span class="lang-it">${a}</span><span class="arrow" aria-hidden="true">→</span><span class="lang-es">${b}</span>${spk(c[1])}${c[2]?`<span class="note">${esc(c[2])}</span>`:""}</div>`});
+    h+=`<div class="row" style="margin-top:10px"><button class="primary" data-practice="${g.id}">Practise these cards</button></div></div></details>`});
+  $("#view").innerHTML=h;openGroup=null;
+  document.querySelectorAll("[data-practice]").forEach(b=>b.onclick=()=>{cardFilter=b.dataset.practice;view("cards")});
+}
+
+function buildQueue(){
+  let pool=CARDS.filter(c=>cardFilter==="all"||c.g===cardFilter);
+  pool.sort((a,b)=>(boxes[a.id]||0)-(boxes[b.id]||0)||Math.random()-.5);
+  cardQueue=pool.slice(0,15);cardIdx=0;
+}
+function cards(){
+  buildQueue();
+  let h=`<h2>Cards</h2><div class="row" role="group" aria-label="Deck"><button class="pill" data-f="all" aria-pressed="${cardFilter==="all"}">All</button>${GROUPS.map(g=>`<button class="pill" data-f="${g.id}" aria-pressed="${cardFilter===g.id}">${esc(g.name)}</button>`).join("")}</div>
+  <div class="row" style="margin-top:10px" role="group" aria-label="Direction"><button class="pill" data-dir="it-es" aria-pressed="${cardDir==="it-es"}">Italian → Spanish</button><button class="pill" data-dir="es-it" aria-pressed="${cardDir==="es-it"}">Spanish → Italian</button></div>
+  <div id="cardArea" style="margin-top:14px"></div>`;
+  $("#view").innerHTML=h;
+  document.querySelectorAll("[data-f]").forEach(b=>b.onclick=()=>{cardFilter=b.dataset.f;cards()});
+  document.querySelectorAll("[data-dir]").forEach(b=>b.onclick=()=>{cardDir=b.dataset.dir;cards()});
+  showCard();
+}
+function showCard(){
+  const area=$("#cardArea");
+  if(cardIdx>=cardQueue.length){area.innerHTML=`<div class="panel"><h2>Round done.</h2><p>Cards you marked "again" will come back first next round.</p><button class="primary" id="again">Another round</button></div>`;$("#again").onclick=()=>{buildQueue();showCard()};return}
+  const c=cardQueue[cardIdx];const [a,b]=["endings","shifts","gender"].includes(c.g)?diff(c.it,c.es):[esc(c.it),esc(c.es)];
+  const frontIt=cardDir==="it-es";
+  const front=frontIt?`<span class="tag">Italiano</span><span class="word">${esc(c.it)}</span>${spk(c.it,"it")}<span class="sub">Say the Spanish out loud, then tap to check.</span>`
+                     :`<span class="tag">Español</span><span class="word" style="color:var(--es)">${esc(c.es)}</span>${spk(c.es)}<span class="sub">Say the Italian, then tap to check.</span>`;
+  const back=`<span class="tag">${frontIt?"Español":"Italiano"}</span><span class="word">${frontIt?b:a}</span>${spk(frontIt?c.es:c.it,frontIt?"es":"it")}<span class="sub">${frontIt?a:b}</span>${c.note?`<span class="sub">${esc(c.note)}</span>`:""}`;
+  area.innerHTML=`<div class="bar" aria-label="Progress"><i style="width:${cardIdx/cardQueue.length*100}%"></i></div>
+   <div class="card" id="card" tabindex="0" role="button" aria-label="Flip card"><div class="inner"><div class="face front" ${frontIt?"":'style="background:var(--es-soft);border-color:var(--es)"'}>${front}</div><div class="face back" ${frontIt?"":'style="background:var(--it-soft);border-color:var(--it)"'}>${back}</div></div></div>
+   <div class="row" id="grade" style="visibility:hidden"><button class="ghost" id="g0" style="flex:1">Again</button><button class="primary" id="g1" style="flex:1">Got it</button></div>`;
+  const card=$("#card");const flip=()=>{card.classList.toggle("flipped");$("#grade").style.visibility="visible";if(card.classList.contains("flipped")&&frontIt)say(c.es)};
+  card.onclick=flip;card.onkeydown=e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();flip()}};
+  $("#g0").onclick=()=>{boxes[c.id]=0;store.set("boxes",boxes);cardIdx++;showCard()};
+  $("#g1").onclick=()=>{boxes[c.id]=Math.min(4,(boxes[c.id]||0)+1);store.set("boxes",boxes);cardIdx++;showCard()};
+}
+
+let qOrder=[],qi=0;
+function traps(){
+  qOrder=QUIZ.map((_,i)=>i).sort(()=>Math.random()-.5).slice(0,10);qi=0;
+  $("#view").innerHTML=`<h2>Traps</h2><p class="muted">Italian logic gives the wrong answer on purpose. Pick the Spanish a porteño would say.</p><div id="qArea"></div>`;
+  showQ();
+}
+function showQ(){
+  const area=$("#qArea");
+  if(qi>=qOrder.length){area.innerHTML=`<div class="panel"><h2>Ten done.</h2><p>Overall you avoid ${Math.round(quizStats.right/quizStats.total*100)}% of traps.</p><button class="primary" id="qAgain">Ten more</button></div>`;$("#qAgain").onclick=traps;return}
+  const [en,opts,ans,why]=QUIZ[qOrder[qi]];
+  const order=opts.map((o,i)=>i).sort(()=>Math.random()-.5);
+  area.innerHTML=`<div class="bar"><i style="width:${qi/qOrder.length*100}%"></i></div><div class="panel" style="margin-top:12px"><p class="muted">How do you say:</p><h2>${esc(en)}</h2>
+   ${order.map(i=>`<button class="opt" data-o="${i}">${esc(opts[i])}</button>`).join("")}<div id="qFb"></div></div>`;
+  document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+    if(area.dataset.locked==="1")return;area.dataset.locked="1";
+    const pick=+b.dataset.o,ok=pick===ans;quizStats.total++;if(ok)quizStats.right++;store.set("quiz",quizStats);
+    document.querySelectorAll(".opt").forEach(x=>{const i=+x.dataset.o;if(i===ans)x.classList.add("right");else if(i===pick)x.classList.add("wrong")});
+    say(opts[ans]);
+    $("#qFb").innerHTML=`<div class="explain"><b>${ok?"Right.":"Trap."}</b> ${esc(why)}</div><div class="row" style="margin-top:12px">${spk(opts[ans])}<button class="primary" id="qNext">Next</button>${ok?"":`<button class="ghost" id="qLog">Add to error log</button>`}</div>`;
+    $("#qNext").onclick=()=>{area.dataset.locked="0";qi++;showQ()};
+    if(!ok)$("#qLog").onclick=e=>{errors.unshift({w:opts[pick],c:opts[ans]});store.set("errors",errors);e.target.textContent="Added";e.target.disabled=true};
+  });
+}
+
+let vq=[],vi=0;
+function vos(){
+  vq=[];VOS.forEach(v=>{if(v[1])vq.push({inf:v[0],kind:"present",ans:v[1]});if(v[2])vq.push({inf:v[0],kind:"command",ans:v[2]})});
+  vq.sort(()=>Math.random()-.5);vq=vq.slice(0,12);vi=0;
+  $("#view").innerHTML=`<h2>Vos</h2><div class="rule">Present: drop the -r, add -s, stress the end, no stem change (podés, querés). Command: drop the -r and stress the end (hablá, vení). With a pronoun the accent disappears (fijate, sentate).</div><div id="vArea"></div>`;
+  showV();
+}
+function showV(){
+  const area=$("#vArea");
+  if(vi>=vq.length){area.innerHTML=`<div class="panel"><h2>¡Muy bien!</h2><button class="primary" id="vAgain">Another round</button></div>`;$("#vAgain").onclick=vos;return}
+  const q=vq[vi];
+  area.innerHTML=`<div class="bar"><i style="width:${vi/vq.length*100}%"></i></div><div class="panel" style="margin-top:12px">
+   <p class="muted">${q.kind==="present"?"Present tense":"Command to a friend"}</p>
+   <h2><span class="lang-es">${esc(q.inf)}</span> → ${q.kind==="present"?"vos ___":"¡___!"}</h2>
+   <input type="text" id="vIn" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your answer">
+   <div class="keys" aria-label="Accent letters">${["á","é","í","ó","ú"].map(k=>`<button data-k="${k}">${k}</button>`).join("")}</div>
+   <div class="row" style="margin-top:12px"><button class="primary" id="vCheck">Check</button><button class="ghost" id="vShow">Show me</button></div><div id="vFb"></div></div>`;
+  const inp=$("#vIn");inp.focus();
+  document.querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{inp.value+=b.dataset.k;inp.focus()});
+  const next=()=>{vi++;showV()};
+  const check=()=>{const v=inp.value.trim().toLowerCase().replace(/^¡|!$/g,"");if(!v)return;
+    const fb=$("#vFb");
+    if(v===q.ans){fb.innerHTML=`<div class="fb ok">¡Eso! <b>${esc(q.ans)}</b></div>`;say(q.ans);setTimeout(next,1300)}
+    else if(strip(v)===strip(q.ans)){fb.innerHTML=`<div class="fb near">Almost: check the accent. <b>${esc(q.ans)}</b> ${spk(q.ans)}</div>`}
+    else{fb.innerHTML=`<div class="fb no">It's <b>${esc(q.ans)}</b>. ${spk(q.ans)} <button class="ghost" id="vNext" style="margin-left:8px">Next</button></div>`;say(q.ans);$("#vNext").onclick=next}};
+  $("#vCheck").onclick=check;inp.onkeydown=e=>{if(e.key==="Enter")check()};
+  $("#vShow").onclick=()=>{$("#vFb").innerHTML=`<div class="fb near"><b>${esc(q.ans)}</b> ${spk(q.ans)} <button class="ghost" id="vNext" style="margin-left:8px">Next</button></div>`;say(q.ans);$("#vNext").onclick=next};
+}
+
+view(store.get("tab","today"));
+if("serviceWorker" in navigator&&location.protocol.startsWith("http")){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}
+</script>
+</body>
+</html>
